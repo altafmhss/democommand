@@ -1,0 +1,36 @@
+Resource Group
+az group create --name SpringBootResourceGroup --location eastus
+
+App Service Plan
+az appservice plan create --resource-group SpringBootResourceGroup --name SpringBootAppServicePlan --is-linux --location eastus --sku F1
+
+Web App
+az webapp create --name springbootappdemo --resource-group SpringBootResourceGroup --plan springbootappserviceplan  --runtime "JAVA|11-java11"
+
+Key Vault Creation
+az keyvault create --name springkeyvaultdemo --resource-group SpringBootResourceGroup --location West Europe
+
+Setting Secrets
+az keyvault secret set --vault-name springkeyvaultdemo --name userpass --value VeryConfidential
+az keyvault secret set --vault-name springkeyvaultdemo --name mainuser --value confidentialusername
+
+
+Create System Managed Identity for app
+az webapp identity assign --resource-group SpringBootResourceGroup --name springdemoapp
+
+Get Object ID(principalId: some random string)
+az webapp identity show --resource-group SpringBootResourceGroup --name springdemoapp
+
+Set permission for app to access secret
+az keyvault set-policy --name springbootkeyvaultdemo --object-id <your app id> --secret-permissions set get list
+
+
+git init   
+git remote add origin repo link
+git config user.email "yourmail@gmail.com"
+git config user.name "your name"
+git pull origin master --allow-unrelated-histories
+git status 
+git add .
+git commit -m "Spring boot deployment"
+git push origin master
